@@ -1,25 +1,26 @@
 const readline = require('readline-sync')
 
-let clientes = [];
 let pedidos = [];
+let comidas = ['Sushi', 'Sashimi', 'Tempurá', 'Guioza', 'Temaki', 'Missoshiru', 'Harumaki', 'Robata'];
+let bebidas = ['Shochu', 'Awamori', 'Amazake', 'Umeshu', 'Hoppy', 'Sakurayu', 'Toso', 'Soju'];
 
 let opção = true;
 while(opção){
 console.log('------------------ Restaurante Kitsune ------------------')
-console.log('1 - Cardápio | 2 - Fazer pedido | 3 - Alterar Pedido | 4 - Cancelar pedido | 5 - Sair: ')
+console.log('1 - Cardápio | 2 - Fazer pedido | 3 - Listar pedidos | 4 - Cancelar pedido | 5 - Sair: ')
 
 
 escolha = parseInt(readline.question("Digite a opcao desejada: "))
 
 switch(escolha){
     case 1:
-listar_pedido()
+listar_cardapio()
 break;
     case 2:
 fazer_pedido()
 break;
     case 3:
-alterar_pedido()
+listar_pedidos()
 break;
     case 4:
 cancelar_pedido()
@@ -32,37 +33,36 @@ break;
 }
 }
 
-function listar_pedido(){
-    console.log('Lista de Tarefas:');
-    pedidos.forEach((pedido) => {
-    clientes.forEach((cliente) => {
-        console.log(`Nome do cliente: ${cliente} | Pedido do cliente: ${pedido}`);
-});
-    });
-
+function listar_cardapio(){ 
+    console.log('Comidas:')
+    console.log(comidas);
+    console.log('Bebidas:')
+    console.log(bebidas);
 }
 
 function fazer_pedido(){
-
 let nomeCliente = readline.question('Digite o seu nome: ')
 let pedidoCliente = readline.question('Digite o seu pedido: ')
-        
-const adicionarPedido = {
-    cliente: nomeCliente,
-    pedido: pedidoCliente
- 
-}
 
-clientes.push(nomeCliente)
-pedidos.push(pedidoCliente)
+pedidos.push({nome: nomeCliente, pedido: pedidoCliente})
 
  }
 
+ function listar_pedidos(){
+    if(pedidos == 0){
+        console.log('Nenhum pedido foi feito ainda')
+        return;
+    }
+    console.log('Lista de pedidos:');
+    pedidos.find((pedido) => {
+        console.log(`Nome do cliente: ${pedido.nome} | Pedido do cliente: ${pedido.pedido}`);
+    })
+}
 function cancelar_pedido(){
     console.log('Lista de pedidos: ', pedidos)
     let excluirpedido = parseInt(readline.question('Escolha qual tarefa voce deseja excluir: ')) -1;
     if (excluirpedido >= 0 && excluirpedido < pedidos.length) {
-    lista.splice(excluirtarefa, 1)
+    pedidos.splice(excluirpedido, 1)
     console.log('Pedido cancelado')
 } else {
     console.log('Escolha um pedido existente')

@@ -1,92 +1,79 @@
-const readline = require('readline-sync');
+const readline = require('readline-sync')
 
-let restaurante = [];
+let pedidos = [];
+let comidas = ['Sushi', 'Sashimi', 'Tempurá', 'Guioza', 'Temaki', 'Missoshiru', 'Harumaki', 'Robata'];
+let bebidas = ['Shochu', 'Awamori', 'Amazake', 'Umeshu', 'Hoppy', 'Sakurayu', 'Toso', 'Soju'];
 
-let opcao = true;
+let opção = true;
+while(opção) {
+    console.log('------------------ Restaurante Kitsune ------------------')
+    console.log('1 - Cardápio | 2 - Fazer pedido | 3 - Listar pedidos | 4 - Cancelar pedido | 5 - Sair: ')
 
-while (opcao) {
-    console.log('------------------ menu ------------------');
-    console.log('1 - Cadastrar | 2 - Listar | 3 - Alterar | 4 - Excluir | 5 - Sair');
+    let escolha = parseInt(readline.question("Digite a opção desejada: "))
 
-    let escolha = parseInt(readline.question("Digite a opcao desejada: "));
-
-    switch (escolha) {
+    switch(escolha) {
         case 1:
-            adicionar_tarefa();
+            listar_cardapio();
             break;
         case 2:
-            listar_tarefa();
+            fazer_pedido();
             break;
         case 3:
-            alterar_tarefa();
+            listar_pedidos();
             break;
         case 4:
-            excluir_tarefa();
+            cancelar_pedido();
             break;
         case 5:
-            sair_tarefa();
+            sair_pedido();
             break;
         default:
             console.log('Escolha uma opção válida');
     }
 }
 
-function adicionar_tarefa() {
-    let tarefa = readline.question('Cadastre uma tarefa: ');
-    restaurante.push(tarefa);
-    console.log('Tarefa cadastrada com sucesso.');
+function listar_cardapio() { 
+    console.log('Comidas:');
+    console.log(comidas.join(' | '));
+    console.log('Bebidas:');
+    console.log(bebidas.join(' | '));
 }
 
-function listar_tarefa() {
-    if (restaurante.length === 0) {
-        console.log('Lista de tarefas vazia.');
-    } else {
-        console.log('Lista de Tarefas:');
-        restaurante.forEach((tarefa, index) => {
-            console.log(`${index + 1} - ${tarefa}`);
-        });
-    }
+function fazer_pedido() {
+    let nomeCliente = readline.question('Digite o seu nome: ');
+    let pedidoCliente = readline.question('Digite o seu pedido (separe por vírgulas se for múltiplos): ');
+
+    pedidos.push({ nome: nomeCliente, pedido: pedidoCliente });
 }
 
-function alterar_tarefa() {
-    if (restaurante.length === 0) {
-        console.log('Não há tarefas para alterar.');
+function listar_pedidos() {
+    if (pedidos.length === 0) {
+        console.log('Nenhum pedido feito ainda.');
         return;
     }
 
-    let alterarIndex = parseInt(readline.question('Escolha qual tarefa você deseja alterar: ')) - 1;
-
-    if (alterarIndex >= 0 && alterarIndex < restaurante.length) {
-        let novaTarefa = readline.question('Digite a nova tarefa: ');
-        restaurante[alterarIndex] = novaTarefa;
-        console.log('Tarefa alterada com sucesso.');
-    } else {
-        console.log('Escolha uma tarefa válida.');
-    }
-}
-
-function excluir_tarefa() {
-    if (restaurante.length === 0) {
-        console.log('Não há tarefas para excluir.');
-        return;
-    }
-
-    console.log('Lista de Tarefas:');
-    restaurante.forEach((tarefa, index) => {
-        console.log(`${index + 1} - ${tarefa}`);
+    console.log('Lista de pedidos:');
+    pedidos.forEach((pedido, index) => {
+        console.log(`${index + 1} - Nome do cliente: ${pedido.nome} | Pedido do cliente: ${pedido.pedido}`);
     });
+}
 
-    let excluirIndex = parseInt(readline.question('Escolha qual tarefa você deseja excluir: ')) - 1;
-
-    if (excluirIndex >= 0 && excluirIndex < restaurante.length) {
-        restaurante.splice(excluirIndex, 1);
-        console.log('Tarefa excluída com sucesso.');
+function cancelar_pedido() {
+    listar_pedidos();
+    if (pedidos.length === 0) {
+        return;
+    }
+    
+    let excluirPedido = parseInt(readline.question('Escolha qual pedido deseja excluir: ')) - 1;
+    if (excluirPedido >= 0 && excluirPedido < pedidos.length) {
+        pedidos.splice(excluirPedido, 1);
+        console.log('Pedido cancelado');
     } else {
-        console.log('Escolha uma tarefa válida.');
+        console.log('Escolha um pedido existente');
     }
 }
 
-function sair_tarefa() {
-    opcao = false;
-    console.log('Fim do programa.');
+function sair_pedido() {
+    opção = false;
+    console.log('Fim do programa');
 }
